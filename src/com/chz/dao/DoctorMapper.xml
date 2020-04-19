@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chz.dao.DoctorMapper">
+	<select id="queryDoctorByopenid" parameterType="String"
+		resultType="Doctor">
+		select * from `doctor` where openid = #{openid}
+	</select>
+
+	<insert id="insertDoctor" parameterType="Doctor">
+		insert into `doctor`
+		values (
+		#{did },
+		#{uniacid},
+		#{openid},
+		#{d_name},
+		#{d_thumb},
+		#{d_keshi},
+		#{kid},
+		#{d_zhicheng},
+		#{d_zhiwu},
+		#{d_telephone},
+		#{d_email},
+		#{d_money},
+		#{d_content},
+		#{d_sex},
+		#{d_age},
+		#{d_shenfengzheng},
+		#{d_yiyuan},
+		false
+		)
+	</insert>
+
+	<select id="getAllDoctorRequest" resultType="Doctor">
+		select * from
+		`doctor` where d_checked = false
+	</select>
+
+	<update id="doctorCheckByDid" parameterType="String">
+		update `doctor` set
+		d_checked = true where did = #{did}
+	</update>
+
+	<delete id="deleteDoctorRequest" parameterType="String">
+		delete from
+		`doctor` where did = #{did}
+	</delete>
+
+	<select id="queryEmailBydid" parameterType="String"
+		resultType="String">
+		select d_email from `doctor` where did = #{did}
+	</select>
+
+	<update id="updateDoctorInfo" parameterType="Doctor">
+		update `doctor` set
+		d_name = #{d_name},
+		d_sex = #{d_sex},
+		d_telephone = #{d_telephone},
+		d_age = #{d_age},
+		d_yiyuan = #{d_yiyuan},
+		d_keshi = #{d_keshi},
+		kid =
+		#{kid},
+		d_content = #{d_content},
+		d_zhiwu = #{d_zhiwu},
+		d_money =
+		#{d_money}
+		where openid = #{openid}
+	</update>
+
+	<select id="getDoctorFromDepartment" resultType="Doctor">
+		SELECT a.*
+		FROM
+		(SELECT * FROM `doctor` WHERE did = #{did} and d_checked = 1) a,
+		(SELECT * FROM `doctor_yuyue` where dy_date = #{date} and dy_time =
+		#{time}) b
+		WHERE a.did = b.d_id
+	</select>
+
+	<insert id="initDoctorFromDepartment">
+		insert into `doctor_yuyue` values
+		(
+		null,
+		10,
+		#{openid},
+		#{did},
+		#{date},
+		#{time},
+		20.00,
+		0,
+		10,
+		0,
+		1
+		)
+	</insert>
+
+	<select id="getDoctorFromDepartmentFinal" resultType="Doctor">
+		SELECT a.*
+		FROM
+		(SELECT * FROM `doctor` WHERE kid = #{kid} and d_checked = 1) a,
+		(SELECT * FROM `doctor_yuyue` where dy_date = #{date} and dy_time =
+		#{time}) b
+		WHERE a.did = b.d_id and b.dy_max > b.dy_now
+	</select>
+
+	<select id="queryDoctorBydid" parameterType="Integer"
+		resultType="Doctor">
+		select * from `doctor` where did = #{did}
+	</select>
+
+
+
+
+
+
+</mapper>

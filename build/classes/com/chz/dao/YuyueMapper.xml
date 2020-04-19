@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chz.dao.YuyueMapper">
+	<insert id="insertYuyueOrder" parameterType="YuyueOrder">
+		insert into
+		`yuyue_order` values
+		(
+		null,
+		#{yo_uname},
+		#{yo_uopenid},
+		#{yo_utelphone},
+		#{yo_ushenfen},
+		#{yo_uybao},
+		#{yo_kid},
+		#{yo_date},
+		#{yo_time},
+		#{yo_number},
+		#{yo_sex},
+		#{yo_did},
+		#{yo_doctor},
+		#{yo_docmoney},
+		#{yo_hexiao},
+		#{states},
+		#{remove},
+		#{paystate}
+		)
+	</insert>
+
+	<select id="getDoctorNowNum" resultType="Integer">
+		select dy_now from
+		`doctor_yuyue` where d_id = #{did} and
+		dy_date = #{date} and dy_time =
+		#{time}
+	</select>
+
+	<update id="updateDoctorNowNum">
+		update `doctor_yuyue` set
+		dy_now = dy_now + 1
+		where
+		d_id = #{did} and
+		dy_date = #{date} and dy_time =
+		#{time}
+	</update>
+
+	<select id="queryUserYuyueOrderlist" parameterType="String"
+		resultType="YuyueOrder">
+		select * from `yuyue_order` where yo_uopenid = #{openid}
+	</select>
+
+	<select id="queryUserYuyueOrderlistUnfinish"
+		parameterType="String" resultType="YuyueOrder">
+		select * from `yuyue_order` where
+		yo_uopenid = #{openid} and yo_hexiao = 0
+	</select>
+
+	<select id="queryUserYuyueOrderlistFinish"
+		parameterType="String" resultType="YuyueOrder">
+		select * from `yuyue_order` where
+		yo_uopenid = #{openid} and yo_hexiao = 1
+	</select>
+
+	<select id="queryUserYuyueOrderByid" parameterType="Integer"
+		resultType="YuyueOrder">
+		select * from `yuyue_order` where yo_id = #{id}
+	</select>
+
+	<select id="queryAllYuyueOrderlist" resultType="YuyueOrder">
+		select * from
+		`yuyue_order` order by yo_date desc
+	</select>
+
+	<update id="userCancelYuyue" parameterType="Integer">
+		update `yuyue_order` set remove = 0 where yo_id = #{id}
+	</update>
+</mapper>     
